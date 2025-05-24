@@ -1,12 +1,4 @@
-export type Item = {
-    no: number;
-    productId: string;
-    productName: string;
-    category: string;
-    price: number;
-    imageUrl: string;
-    stock: number;
-  };
+import { Item } from "@/app/types";
   
   export const mockItems: Item[] = [
     {

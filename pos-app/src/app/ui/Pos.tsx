@@ -1,8 +1,8 @@
 'use client'
 import React, { useReducer, useState, } from 'react';
-import Summary from '@/app/ui/pos/Summary';
-import CartList from '@/app/ui/pos/CartList';
-import ProductList from '@/app/ui/pos/ProductList';
+// import Summary from '@/app/ui/pos/Summary';
+// import CartList from '@/app/ui/pos/CartList';
+// import ProductList from '@/app/ui/pos/ProductList';
 
 
 interface Product {
@@ -374,9 +374,9 @@ export default function Pos() {
                 </div>
             </div>
             <div className='mt-4 '>
-                <ProductList />
-                <CartList />
-                <Summary />
+                {/* <ProductList  /> */}
+                {/* <CartList />
+                <Summary /> */}
             </div>
         </div>
     );

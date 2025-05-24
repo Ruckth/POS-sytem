@@ -1,5 +1,4 @@
-import { Item, mockItems } from "@/lib/placeholder";
-export type { Item };
+import { mockItems } from "@/lib/placeholder";
 
 const ITEMS_PER_PAGE = 6;
 
