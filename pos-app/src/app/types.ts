@@ -13,7 +13,7 @@ export interface Item {
   export interface ItemInCart {
     item: Item;
     discountType?: 'percentage' | 'amount';
-    discount?: number;
+    discount?: number | '';
     delivery?: boolean;
     cartQuantity: number;
   }

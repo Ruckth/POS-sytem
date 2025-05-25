@@ -36,9 +36,9 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     }
 
     const basePrice = cartItem.item.price;
-    const hasDiscount = (cartItem.discount ?? 0) > 0 && cartItem.discountType;
+    const hasDiscount = Number(cartItem.discount ?? 0) > 0 && cartItem.discountType;
     const finalUnitPrice = hasDiscount
-        ? discountPrice(basePrice, cartItem.discount!, cartItem.discountType!)
+        ? discountPrice(basePrice, Number(cartItem.discount), cartItem.discountType!)
         : basePrice;
     const totalPrice = finalUnitPrice * cartItem.cartQuantity;
 
@@ -176,7 +176,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                                         type: 'SET_DISCOUNT',
                                         payload: {
                                             productId: cartItem.item.productId,
-                                            discount: isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value),
+                                            discount: e.target.value === '' ? '' : (isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value)),
                                             discountType: cartItem.discountType ?? 'amount',
                                         },
                                     })

@@ -10,9 +10,11 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Ghost } from "lucide-react";
 
 export default function Summary() {
-    const [discount, setDiscount] = useState(0);
+    const [discount, setDiscount] = useState('');
     const [discountType, setDiscountType] = useState<'percentage' | 'amount'>('percentage');
     const { state } = useCart();
 
@@ -47,7 +49,7 @@ export default function Summary() {
     const vatAmount = () => subTotal() * 0.07;
 
     const totalPrice = () => {
-        return subTotal() - discountPrice(discount, discountType) + vatAmount();
+        return subTotal() - discountPrice(Number(discount), discountType) + vatAmount();
     }
 
     const formatCurrency = (amount: number) => {
@@ -96,32 +98,44 @@ export default function Summary() {
                     <Input
                         type="number"
                         value={discount}
-                        onChange={e => setDiscount(Number(e.target.value))}
+                        onChange={e => setDiscount(e.target.value)}
                         placeholder="Enter discount"
                         className="w-50"
                     />
                 </div>
-                {discount > 0 && (
+
+                {discount !== '' && Number(discount) > 0 && (
                     <div className="flex justify-between items-center font-semibold text-green-600 px-2 py-1">
                         <span>Discount</span>
-                        <span>-{formatCurrency(discountPrice(discount, discountType))}</span>
+                        <span>-{formatCurrency(discountPrice(Number(discount), discountType))}</span>
                     </div>
                 )}
             </div>
             {/* Total */}
             <div className="border-t-2 border-gray-200 pt-4">
                 <div className="flex justify-between items-center">
-                    <span className="text-xl font-bold text-gray-800">Total</span>
-                    <span className="text-2xl font-bold text-blue-600">
+                    <span className="text-lg font-bold text-gray-800">Total</span>
+                    <span className="text-lg font-bold text-blue-600">
                         {formatCurrency(totalPrice())}
                     </span>
                 </div>
             </div>
 
             {/* Action Button */}
-            <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                Proceed to Checkout
-            </button>
+            <div className="mt-4 flex justify-center gap-10">
+                <Button
+                    onClick={() => {
+                        localStorage.removeItem('cartItems');
+                        window.location.reload();
+                    }}
+                    className="border-1"
+                    variant="ghost">
+                    Cancel
+                </Button>
+                <Button className="bg-blue-700 hover:bg-blue-950 text-white">
+                    Checkout
+                </Button>
+            </div>
         </div>
     )
 }
