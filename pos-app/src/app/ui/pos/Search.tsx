@@ -18,7 +18,7 @@ export default function Search({ onSearch }: { onSearch: (term: string) => void 
   // The handleSubmit function is no longer needed as search is triggered by debounced input
 
   return (
-    <div className="mb-4 flex gap-2">
+    <div className="mb-2 flex gap-2">
       <input
         type="text"
         placeholder="Search products..."

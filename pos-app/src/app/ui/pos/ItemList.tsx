@@ -113,42 +113,42 @@ export default function ItemCart({ items }: { items: Item[] }) {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <Search onSearch={handleSearch} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {currentItems.length > 0 ? (
-          currentItems.map(item => (
-            <ItemCard
-              key={item.productId}
-              item={item}
-              isAvailable={isAvailable}
-              getItemQuantity={getItemQuantity}
-              handleAddItem={handleAddItem}
-              increaseCartQuantity={increaseCartQuantity}
-              decreaseCartQuantity={decreaseCartQuantity}
-            />
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-600">No items found.</p>
-        )}
-        {/* AlertDialog is now controlled by isOverStockAlertOpen state */}
-        <OverStockDialog itemOverStock={itemOverStock} setItemOverStock={setItemOverStock} />
-        {/* AlertDialog before remove  */}
-        <ConfirmDeleteDialog
-        isRemoveItemAlertOpen={isRemoveItemAlertOpen}
-        setIsRemoveItemAlertOpen={setIsRemoveItemAlertOpen}
-        itemToRemove={itemToRemove}
-        dispatch={dispatch}
-        setItemToRemove={setItemToRemove}
-      />
-
+    <div className="container mx-auto p-4 ">
+      <div className="flex-shrink-0 p-4 bg-white border-b sticky top-0 z-10">
+        <Search onSearch={handleSearch} />
       </div>
-      {/* AlertDialog before remove  */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+        <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 ">
+          {currentItems.length > 0 ? (
+            currentItems.map(item => (
+              <ItemCard
+                key={item.productId}
+                item={item}
+                isAvailable={isAvailable}
+                getItemQuantity={getItemQuantity}
+                handleAddItem={handleAddItem}
+                increaseCartQuantity={increaseCartQuantity}
+                decreaseCartQuantity={decreaseCartQuantity}
+              />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-600">No items found.</p>
+          )}
+          {/* AlertDialog is now controlled by isOverStockAlertOpen state */}
+          <OverStockDialog itemOverStock={itemOverStock} setItemOverStock={setItemOverStock} />
+          {/* AlertDialog before remove  */}
+          <ConfirmDeleteDialog
+            isRemoveItemAlertOpen={isRemoveItemAlertOpen}
+            setIsRemoveItemAlertOpen={setIsRemoveItemAlertOpen}
+            itemToRemove={itemToRemove}
+            dispatch={dispatch}
+            setItemToRemove={setItemToRemove}
+          />
+      </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
   );
 }
@@ -156,27 +156,27 @@ export default function ItemCart({ items }: { items: Item[] }) {
 export function OverStockDialog({ itemOverStock, setItemOverStock }: { itemOverStock: boolean, setItemOverStock: (value: boolean) => void }) {
   return (
     <>
-     {/* AlertDialog is now controlled by isOverStockAlertOpen state */}
-     <AlertDialog open={itemOverStock} onOpenChange={setItemOverStock}>
-     <AlertDialogContent>
-       <AlertDialogHeader>
-         <AlertDialogTitle>Item Over Stock</AlertDialogTitle>
-       </AlertDialogHeader>
-       <p>You cannot add more of this item than what is available in stock.</p>
-       <AlertDialogFooter>
-         <AlertDialogCancel>Close</AlertDialogCancel>
-       </AlertDialogFooter>
-     </AlertDialogContent>
-   </AlertDialog>
-   </>
+      {/* AlertDialog is now controlled by isOverStockAlertOpen state */}
+      <AlertDialog open={itemOverStock} onOpenChange={setItemOverStock}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-red-500">Item Over Stock</AlertDialogTitle>
+          </AlertDialogHeader>
+          <p>You cannot add more of this item than what is available in stock.</p>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
-  
+
 }
 interface RemoveItemAlertDialogProps {
   isRemoveItemAlertOpen: boolean;
   setIsRemoveItemAlertOpen: (open: boolean) => void;
-  itemToRemove: any; 
-  dispatch: Dispatch<any>; 
+  itemToRemove: any;
+  dispatch: Dispatch<any>;
   setItemToRemove: (item: any | null) => void;
 }
 
@@ -200,6 +200,7 @@ export function ConfirmDeleteDialog({
             setItemToRemove(null);
           }}>Cancel</AlertDialogCancel>
           <Button
+            variant="destructive"
             onClick={() => {
               if (itemToRemove) {
                 dispatch({ type: 'REMOVE_ITEM', payload: itemToRemove });

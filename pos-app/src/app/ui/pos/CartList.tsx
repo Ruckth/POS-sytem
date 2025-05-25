@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useCart } from "../CartContext";
-import Image from "next/image";
-import { Switch } from "@/components/ui/switch";
 import { OverStockDialog, ConfirmDeleteDialog } from "./ItemList";
+import CartItemCard from "./CartCard";
 
 export default function CartList() {
     const { state, dispatch } = useCart();
@@ -88,118 +87,18 @@ export default function CartList() {
     return (
         <div>
             {state.itemsInCart.map(cartItem => {
-                const basePrice = cartItem.item.price;
-                const hasDiscount = cartItem.discount && cartItem.discountType;
-                const finalUnitPrice = hasDiscount
-                    ? discountPrice(basePrice, cartItem.discount!, cartItem.discountType!)
-                    : basePrice;
-                const totalPrice = finalUnitPrice * cartItem.cartQuantity;
-
                 return (
-                    <div key={cartItem.item.productId} className="border p-4 mb-4 rounded-lg shadow-sm space-y-2">
-                        <div className="flex items-center gap-4">
-                            <Image
-                                src={cartItem.item.imageUrl}
-                                alt={cartItem.item.productName}
-                                width={50}
-                                height={50}
-                            />
-                            <div>
-                                <p className="font-semibold">{cartItem.item.productName}</p>
-                                <p>Price: ฿{basePrice.toFixed(2)}</p>
-                                {hasDiscount && (
-                                    <p className="text-green-600">
-                                        Discounted: ฿{finalUnitPrice.toFixed(2)}
-                                    </p>
-                                )}
-                                <p className="font-bold">
-                                    Total: ฿{totalPrice.toFixed(2)}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Quantity Control */}
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => decreaseQuantity(cartItem.item.productId)}
-                                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                            >
-                                −
-                            </button>
-                            <input
-                                type="number"
-                                value={cartItem.cartQuantity}
-                                onChange={e => handleQuantityInput(e, cartItem.item.productId)}
-                                className="w-16 text-center border rounded"
-                            />
-                            <button
-                                onClick={() => increaseQuantity(cartItem.item.productId)}
-                                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                            >
-                                +
-                            </button>
-                        </div>
-
-                        {/* Discount Type Selector */}
-                        <div className="flex items-center gap-2">
-                            <select
-                                value={cartItem.discountType ?? 'amount'}
-                                onChange={e =>
-                                    dispatch({
-                                        type: 'SET_DISCOUNT',
-                                        payload: {
-                                            productId: cartItem.item.productId,
-                                            discount: cartItem.discount ?? 0,
-                                            discountType: e.target.value as "percentage" | "amount",
-                                        },
-                                    })
-                                }
-                                className="border rounded p-1"
-                            >
-                                <option value="amount">Amount</option>
-                                <option value="percentage">Percentage</option>
-                            </select>
-
-                            <input
-                                type="number"
-                                placeholder="Discount"
-                                step="0.01"
-                                defaultValue={cartItem.discount ?? ""}
-                                onChange={e =>
-                                    dispatch({
-                                        type: 'SET_DISCOUNT',
-                                        payload: {
-                                            productId: cartItem.item.productId,
-                                            discount: parseFloat(e.target.value),
-                                            discountType: cartItem.discountType ?? 'amount',
-                                        },
-                                    })
-                                }
-                                className="w-24 border rounded p-1"
-                            />
-                        </div>
-
-                        {/* Delivery Switch */}
-                        <div className="flex items-center gap-2">
-                            <span>Delivery:</span>
-                            <Switch
-                                checked={cartItem.delivery ?? false}
-                                onCheckedChange={(checked) => {
-                                    dispatch({
-                                        type: 'SET_DELIVERY',
-                                        payload: {
-                                            productId: cartItem.item.productId,
-                                            delivery: checked,
-                                        },
-                                    });
-                                }}
-                            />
-                        </div>
-
-                        {/* Remove Button */}
-                       <button className="p-1 text-red-500 hover:underline" onClick={() => setIsRemoveItemAlertOpen(true)}>Remove</button>
-    
-                    </div>
+                    <CartItemCard
+                        key={cartItem.item.productId}
+                        cartItem={cartItem}
+                        dispatch={dispatch}
+                        decreaseQuantity={decreaseQuantity}
+                        increaseQuantity={increaseQuantity}
+                        handleQuantityInput={handleQuantityInput}
+                        setIsRemoveItemAlertOpen={setIsRemoveItemAlertOpen}
+                        setItemToRemove={setItemToRemove}
+                        discountPrice={discountPrice}
+                    />
                 );
             })}
             <OverStockDialog itemOverStock={itemOverStock} setItemOverStock={setItemOverStock} />
