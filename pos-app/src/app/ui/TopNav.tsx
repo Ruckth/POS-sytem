@@ -7,15 +7,7 @@ export default function TopNav() {
                 <h1 className="text-xl font-bold">POS System</h1>
               </div>
               <div className="flex space-x-4">
-                <a href="/" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                  Home
-                </a>
-                <a href="/reports" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                  Reports
-                </a>
-                <a href="/settings" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                  Settings
-                </a>
+                
               </div>
             </div>
           </div>
