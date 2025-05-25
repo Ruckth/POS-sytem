@@ -8,8 +8,6 @@ export default async function Home() {
   const allItems = await getAllItems();
 
     return (
-        <Pos
-            items={allItems}
-        />
+        <Pos items={allItems}/>
     );
 }
